@@ -6,8 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- My name is : <?//= $name ?> {{ $name }} -->
-    <p>My name is : {!! $name !!}</p>
-    <p>My name is : {{ $name }}</p>
+    New Series
 </body>
 </html>
