@@ -2,6 +2,7 @@
 @section('title', 'Home')
 @section('content')
     <div class="container">
-        Home
+        {{-- My name is : {{htmlspecialchars($name)}} --}}
+        My name is : {!!$name!!}
     </div>
 @endsection
