@@ -1,5 +1,4 @@
-@extends('layouts.app')
-@section('title', 'Post')
+@extends('layouts.app', ['title' => 'All Post'])
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between">
@@ -30,7 +29,10 @@
                         <td>{{ Str::limit($post->body, 100) }} 
                             <a href="/posts/{{ $post->slug }}">Read more</a></td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
-                        <td></td>
+                        <td>
+                            Ubah
+                            Hapus
+                        </td>
                     </tr>
                     @endforeach
                     {{-- @empty
