@@ -30,7 +30,7 @@
                             <a href="/posts/{{ $post->slug }}">Read more</a></td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>
-                            Ubah
+                            <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>
                             Hapus
                         </td>
                     </tr>
