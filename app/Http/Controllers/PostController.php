@@ -29,26 +29,32 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    // public function store(Request $request)
+    public function store()
     {
-        // $post = new Post;
-        // $post->title = $request->title;
-        // $post->slug = \Str::slug($request->title);
-        // $post->body = $request->body;
-
-        // $post->save();
-        // return redirect()->to('posts');
-
-        // Post::create([
-        //     'title' => $request->title,
-        //     'slug' => \Str::slug($request->title),
-        //     'body' => $request->body,
+        // $this->validate($request, [
+        //     'title' => 'required|min:3',
+        //     'body' => 'required',
         // ]);
 
-        $post = $request->all();
-        $post['slug'] = \Str::slug($request->title);
+        // $post = $request->all();
+        // $post['slug'] = \Str::slug($request->title);
 
-        Post::create($post);
+        // $attr = $request->validate([
+        //     'title' => 'required|min:3',
+        //     'body' => 'required',
+        // ]);
+
+        // $attr['slug'] = \Str::slug($request->title);
+
+        $attr = request()->validate([
+            'title' => 'required|min:3',
+            'body' => 'required',
+        ]);
+
+        $attr['slug'] = \Str::slug(request('title'));
+
+        Post::create($attr);
 
         return redirect()->to('posts');
     }
