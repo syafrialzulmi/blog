@@ -29,24 +29,8 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    // public function store(Request $request)
     public function store()
     {
-        // $this->validate($request, [
-        //     'title' => 'required|min:3',
-        //     'body' => 'required',
-        // ]);
-
-        // $post = $request->all();
-        // $post['slug'] = \Str::slug($request->title);
-
-        // $attr = $request->validate([
-        //     'title' => 'required|min:3',
-        //     'body' => 'required',
-        // ]);
-
-        // $attr['slug'] = \Str::slug($request->title);
-
         $attr = request()->validate([
             'title' => 'required|min:3',
             'body' => 'required',
@@ -55,6 +39,9 @@ class PostController extends Controller
         $attr['slug'] = \Str::slug(request('title'));
 
         Post::create($attr);
+
+        session()->flash('success', 'The post was created');
+        // session()->flash('error', 'The post was created');
 
         return redirect()->to('posts');
     }
