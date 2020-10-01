@@ -31,7 +31,11 @@
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>
                             <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>
-                            Hapus
+                            <form action="/posts/{{ $post->slug }}/delete" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

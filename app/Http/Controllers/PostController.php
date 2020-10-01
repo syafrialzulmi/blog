@@ -32,8 +32,6 @@ class PostController extends Controller
 
     public function store(PostRequest $request)
     {
-        // $attr = $this->validateRequest();
-
         $attr = $request->all();
 
         $attr['slug'] = \Str::slug(request('title'));
@@ -53,8 +51,6 @@ class PostController extends Controller
 
     public function update(PostRequest $request, Post $post)
     {
-        // $attr = $this->validateRequest();
-
         $attr = $request->all();
 
         $post->update($attr);
@@ -64,11 +60,11 @@ class PostController extends Controller
         return redirect()->to('posts');
     }
 
-    // public function validateRequest()
-    // {
-    //     return request()->validate([
-    //         'title' => 'required|min:3',
-    //         'body' => 'required',
-    //     ]);
-    // }
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        session()->flash('success', 'The post was destroyed');
+        return redirect()->to('posts');
+    }
+    
 }
