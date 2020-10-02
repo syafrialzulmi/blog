@@ -20,31 +20,22 @@
                         <th>Create</th>
                         <th>Action</th>
                     </tr>
-                    
-                    {{-- @forelse($posts as $key=>$post) --}}
+                    @csrf
                     @foreach($posts as $key=>$post)
                     <tr>
+                        <input type="hidden" class="delete_text_slug" value="{{ $post->slug }}">                        
                         <td>{{ $posts->firstItem() + $key  }}</td>
                         <td>{{ $post->title }}</td>
                         <td>{{ Str::limit($post->body, 100) }} 
                             <a href="/posts/{{ $post->slug }}">Read more</a></td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>
-                            <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>
-                            <form action="/posts/{{ $post->slug }}/delete" method="post">
-                                @csrf
-                                @method('delete')
-                                <button class="btn btn-danger" type="submit">Delete</button>
-                            </form>
+                            <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>                            
+                            <button class="btn btn-danger delete">Delete</button>
                         </td>
                     </tr>
                     @endforeach
-                    {{-- @empty
-                        <div class="alert alert-info">
-                            Tidak ada data
-                        </div>
-                    @endforelse --}}
-    
+
                 </table>
                 {{ $posts->links() }}
             </div>
@@ -55,4 +46,47 @@
         @endif
         </div>
     </div>
+
+    <script> 
+    $(document).ready(function(){
+
+        $('.delete').click(function(e) {
+            e.preventDefault();
+            var delete_slug = $(this).closest("tr").find('.delete_text_slug').val();
+            
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    var data = {
+                        '_token': $('input[name=_token]').val(),
+                        'slug': delete_slug,
+                    }
+
+                    $.ajax({
+                        type: "delete",
+                        url: '/posts/'+delete_slug,
+                        data: data,
+                        success: function (resp) {
+                            swal(resp.status, {
+                                icon: "success",
+                            })
+                            .then((result) => {
+                                location.reload();
+                            });
+                        }
+                    });                    
+                } 
+            });
+            
+        })
+    })          
+    </script>
+
 @endsection

@@ -64,7 +64,8 @@ class PostController extends Controller
     {
         $post->delete();
         session()->flash('success', 'The post was destroyed');
-        return redirect()->to('posts');
+        // return redirect()->to('posts');
+        return response()->json(['status' => 'Post was destroyd']);
     }
     
 }
