@@ -16,7 +16,9 @@
                 @endif
             </div>
             <div>
-                <a href="/posts/create" class="btn btn-info">New posts</a>
+                @if (Auth::check())
+                    <a href="/posts/create" class="btn btn-info">New posts</a>
+                @endif            
             </div>
         </div>    
         <hr>    
@@ -41,8 +43,10 @@
                             <a href="/posts/{{ $post->slug }}">Read more</a></td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>
-                            <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>                            
-                            <button class="btn btn-danger delete">Delete</button>
+                            @auth
+                                <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>                            
+                                <button class="btn btn-danger delete">Delete</button>
+                            @endauth                            
                         </td>
                     </tr>
                     @endforeach
