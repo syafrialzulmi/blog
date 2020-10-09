@@ -39,7 +39,11 @@
                         <input type="hidden" class="delete_text_slug" value="{{ $post->slug }}">                        
                         <td>{{ $posts->firstItem() + $key  }}</td>
                         <td>{{ $post->title }}</td>
-                        <td>{{ Str::limit($post->body, 100) }} 
+                        <td>
+                            {{-- <img src="{{ asset("storage/".$post->thumbnail) }}" alt="{{ $post->thumbnail }}"> --}}
+                            {{-- <img src="{{ asset($post->takeImage()) }}" alt="{{ $post->thumbnail }}"> --}}
+                            <img src="{{ $post->takeImage }}" alt="{{ $post->thumbnail }}">
+                            {{ Str::limit($post->body, 100) }} 
                             <a href="/posts/{{ $post->slug }}">Read more</a>
                             <div class="text-secondary">
                                 {{ $post->author->name }}

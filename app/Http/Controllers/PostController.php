@@ -35,9 +35,15 @@ class PostController extends Controller
     {
         $attr = $request->all();
 
-        $attr['slug'] = \Str::slug(request('title'));
+        $slug = \Str::slug(request('title'));
+
+        $attr['slug'] = $slug;        
+
+        $thumbnail = request()->file('thumbnail');
+        $thumbnailUrl = $thumbnail->storeAs("images/posts", "{$slug}.{$thumbnail->extension()}");
 
         $attr['category_id'] = request('category');
+        $attr['thumbnail'] = $thumbnailUrl;
 
         // $attr['user_id'] = auth()->id();
 

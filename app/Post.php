@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'body', 'category_id'];    //field sudah d filter , 'user_id'
+    protected $fillable = ['title', 'slug', 'body', 'category_id', 'thumbnail'];    //field sudah d filter , 'user_id'
     
     public function category()
     {
@@ -22,5 +22,11 @@ class Post extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // public function takeImage()
+    public function getTakeImageAttribute()
+    {
+        return "/storage/".$this->thumbnail;
     }
 }
