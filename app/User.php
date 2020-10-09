@@ -46,4 +46,12 @@ class User extends Authenticatable
     {
         return $this->username == 'syafrialzulmi';
     }
+
+    public function gravatar()
+    {
+        $default = "https://www.somewhere.com/homestar.jpg";
+        $size = 40;
+
+        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
+    }
 }

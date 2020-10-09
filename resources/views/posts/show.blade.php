@@ -12,5 +12,7 @@
         </div>
         <hr>
         <p>{{ $post->body }}</p>
+        
+        <img src="{{ $post->author->gravatar() }}" alt=""> {{ $post->author->name }}
     </div>
 @endsection

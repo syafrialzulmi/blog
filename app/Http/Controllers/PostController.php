@@ -33,17 +33,31 @@ class PostController extends Controller
 
     public function store(PostRequest $request)
     {
+
+        $request->validate([
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,svg|max:2048'
+        ]);
+
         $attr = $request->all();
 
         $slug = \Str::slug(request('title'));
 
         $attr['slug'] = $slug;        
 
-        $thumbnail = request()->file('thumbnail');
-        $thumbnailUrl = $thumbnail->storeAs("images/posts", "{$slug}.{$thumbnail->extension()}");
+        // $thumbnail = request()->file('thumbnail');
+        // $thumbnailUrl = $thumbnail->storeAs("images/posts", "{$slug}.{$thumbnail->extension()}");
+        // $thumbnailUrl = $thumbnail->store("images/posts");
+
+        $thumbnail = request()->file('thumbnail') ? request()->file('thumbnail')->store("images/posts") : null;
+
+        // if (request()->file('thumbnail')) {
+        //     $thumbnail = request()->file('thumbnail')->store("images/posts");
+        // } else {
+        //     $thumbnail = null;
+        // }
 
         $attr['category_id'] = request('category');
-        $attr['thumbnail'] = $thumbnailUrl;
+        $attr['thumbnail'] = $thumbnail;
 
         // $attr['user_id'] = auth()->id();
 
@@ -71,9 +85,24 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
 
+        $request->validate([
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,svg|max:2048'
+        ]);
+
+        if (request()->file('thumbnail')) {
+            \Storage::delete($post->thumbnail);
+            $thumbnail = request()->file('thumbnail')->store("images/posts");
+        } else {
+            $thumbnail = $post->thumbnail;
+        }
+
+        
+
         $attr = $request->all();
 
         $attr['category_id'] = request('category');
+        $attr['thumbnail'] = $thumbnail;
+
         $post->update($attr);
 
         $post->tags()->sync(request('tags'));
@@ -87,6 +116,8 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
+
+        \Storage::delete($post->thumbnail);
 
         // if(auth()->user()->is($post->author)) {
             $post->tags()->detach();
