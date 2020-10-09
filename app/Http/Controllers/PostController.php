@@ -9,22 +9,9 @@ use App\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
-{
-    // public function __construct()
-    // {
-    //     $this->middleware('auth')->except([
-    //             'index', 
-    //             'show',
-    //         ]);
-    // }
-    
+{    
     public function index()
     {
-        // $posts =  Post::take(5)->get();
-        // $posts =  Post::latest()->paginate(5);
-        // $posts =  Post::simplePaginate(5);
-
-
         return view('posts.index', [
             'posts' => Post::latest()->paginate(5),
         ]);
@@ -52,14 +39,17 @@ class PostController extends Controller
 
         $attr['category_id'] = request('category');
 
-        $post = Post::create($attr);
+        // $attr['user_id'] = auth()->id();
+
+        $post = auth()->user()->posts()->create($attr);
 
         $post->tags()->attach(request('tags'));
 
         session()->flash('success', 'The post was created');
         // session()->flash('error', 'The post was created');
 
-        return redirect()->to('posts');
+        // return redirect()->to('all-posts');
+        return redirect()->route('posts.index');
     }
 
     public function edit(Post $post)
@@ -82,17 +72,20 @@ class PostController extends Controller
 
         session()->flash('success', 'The post was updated');
 
-        return redirect()->to('posts');
+        // return redirect()->to('posts');
+        return redirect()->route('posts.index');
     }
 
     public function destroy(Post $post)
     {
-        $post->tags()->detach();
-        $post->delete();        
+        if(auth()->user()->is($post->author)) {
+            $post->tags()->detach();
+            $post->delete();        
 
-        session()->flash('success', 'The post was destroyed');
-        // return redirect()->to('posts');
-        return response()->json(['status' => 'Post was destroyd']);
+            session()->flash('success', 'The post was destroyed');
+            // return redirect()->to('posts');
+            return response()->json(['status' => 'Post was destroyd']);
+        }         
     }
     
 }

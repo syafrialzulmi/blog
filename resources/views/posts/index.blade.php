@@ -40,13 +40,21 @@
                         <td>{{ $posts->firstItem() + $key  }}</td>
                         <td>{{ $post->title }}</td>
                         <td>{{ Str::limit($post->body, 100) }} 
-                            <a href="/posts/{{ $post->slug }}">Read more</a></td>
+                            <a href="/posts/{{ $post->slug }}">Read more</a>
+                            <div class="text-secondary">
+                                {{ $post->author->name }}
+                            </div>
+                        </td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
-                        <td>
-                            @auth
+                        <td>                            
+                            {{-- @auth --}}
+                            {{-- @if (auth()->user()->id == $post->user_id) --}}
+                            @if (auth()->user()->is($post->author))
                                 <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>                            
                                 <button class="btn btn-danger delete">Delete</button>
-                            @endauth                            
+                            @endif
+                                
+                            {{-- @endauth --}}
                         </td>
                     </tr>
                     @endforeach

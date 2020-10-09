@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'body', 'category_id'];    //field sudah d filter
+    protected $fillable = ['title', 'slug', 'body', 'category_id'];    //field sudah d filter , 'user_id'
     
     public function category()
     {
@@ -17,5 +17,10 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
