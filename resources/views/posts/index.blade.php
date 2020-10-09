@@ -49,11 +49,15 @@
                         <td>                            
                             {{-- @auth --}}
                             {{-- @if (auth()->user()->id == $post->user_id) --}}
-                            @if (auth()->user()->is($post->author))
-                                <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a>                            
+                            {{-- @if (auth()->user()->is($post->author)) --}}
+                            @can('delete', $post)
+                                <a href="/posts/{{ $post->slug }}/edit" class="btn btn-info">Edit</a> 
+                            @endcan
+
+                            @can('update', $post)                                                           
                                 <button class="btn btn-danger delete">Delete</button>
-                            @endif
-                                
+                            @endcan
+                            {{-- @endif --}}                                
                             {{-- @endauth --}}
                         </td>
                     </tr>
