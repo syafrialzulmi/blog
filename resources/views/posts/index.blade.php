@@ -38,7 +38,14 @@
                     <tr>
                         <input type="hidden" class="delete_text_slug" value="{{ $post->slug }}">                        
                         <td>{{ $posts->firstItem() + $key  }}</td>
-                        <td>{{ $post->title }}</td>
+                        <td>
+                            {{ $post->title }}
+                            <small>{{ $post->category->title }}</small>
+                            &middot;
+                            @foreach ($post->tags as $tag)
+                                <small>{{ $tag->title }}</small>
+                            @endforeach
+                        </td>
                         <td>
                             {{-- <img src="{{ asset("storage/".$post->thumbnail) }}" alt="{{ $post->thumbnail }}"> --}}
                             {{-- <img src="{{ asset($post->takeImage()) }}" alt="{{ $post->thumbnail }}"> --}}
