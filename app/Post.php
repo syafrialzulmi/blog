@@ -8,6 +8,8 @@ class Post extends Model
 {
     protected $fillable = ['title', 'slug', 'body', 'category_id', 'thumbnail'];    //field sudah d filter , 'user_id'
     
+    protected $with = ['author', 'tags', 'category'];
+
     public function category()
     {
         // return $this->hasOne(Category::class);

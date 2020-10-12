@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', 'HomeController');
 
+
+Route::get('search', 'SearchController@post')->name('search.posts');
 Route::middleware('auth')->group(function() {
     Route::get('all-posts', 'PostController@index')->name('posts.index')->withoutMiddleware('auth');
     Route::get('posts/create', 'PostController@create');
